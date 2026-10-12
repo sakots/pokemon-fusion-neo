@@ -5,6 +5,11 @@
 pokemon-fusion-neoは[ポケモンフュージョン](https://pknavi.com/pokemonfusiongenerator)を元にした合体ポケモン生成機です。
 スカーレットバイオレットまでの1025種類のポケモンを合体できます。
 
+## 実装
+
+web上でjavascriptを用いて動かすことになりそうなので、React/typescriptで実装する。
+pnpmを用いる。
+
 ## 開発のサイクル
 
 開発は以下のサイクルで行うこと。
