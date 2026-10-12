@@ -7,6 +7,7 @@ import { randomPokemon } from './domain/selection';
 export default function App() {
   const [headId, setHeadId] = useState(1);
   const [bodyId, setBodyId] = useState(4);
+  const [matchColors, setMatchColors] = useState(true);
   const head = parts.find(entry => entry.id === headId)!;
   const body = parts.find(entry => entry.id === bodyId)!;
 
@@ -30,13 +31,17 @@ export default function App() {
 
       <section className="preparation" aria-label="試作の状況">
         <h2>試作：{parts.length}種類</h2>
-        <p>{parts.length}種類から頭と体を選んで合体できます。配色は調整前です。</p>
+        <p>{parts.length}種類から頭と体を選んで合体できます。形や配色は調整中です。</p>
         <p>1025種類への対応は準備中です。</p>
       </section>
 
       <section className="result-panel" aria-labelledby="result-title">
         <h2 id="result-title">合体結果</h2>
-        <FusionPreview head={head} body={body} />
+        <FusionPreview head={head} body={body} matchColors={matchColors} />
+        <label className="color-toggle">
+          <input type="checkbox" checked={matchColors} onChange={event => setMatchColors(event.target.checked)} />
+          体の色を頭に合わせる
+        </label>
         <div className="selection-actions">
           <button type="button" onClick={randomizeBoth}>両方をランダム</button>
           <button type="button" onClick={swap}>頭と体を交換</button>

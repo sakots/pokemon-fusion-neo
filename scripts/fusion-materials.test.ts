@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { expect, test } from 'vitest';
-import { extractParts } from './fusion-materials.ts';
+import { extractColorPixels, extractParts } from './fusion-materials.ts';
 
 const mask = {
   id: 1,
@@ -42,4 +42,13 @@ test('切り出した余白の分だけ接続点を移す', () => {
 test('空の部位や領域外のマスクを拒否する', () => {
   expect(() => extractParts(source, { ...mask, headPolygon: [[2, 2], [3, 2], [3, 3], [2, 3]] })).toThrow();
   expect(() => extractParts(source, { ...mask, headAnchor: { x: 4, y: 4 } })).toThrow();
+});
+
+test('同じ皮膚色でも保護領域のピクセルを変換対象から外す', () => {
+  const data = new Uint8ClampedArray([160, 80, 20, 255, 160, 80, 20, 255, 0, 0, 0, 0]);
+  const image = { width: 3, height: 1, data, anchor: { x: 1, y: 1 } };
+  expect(extractColorPixels(image, image, {
+    ...mask, bodyPalette: [[160, 80, 20]],
+    bodyProtectedPolygons: [[[0, 0], [1, 0], [1, 1], [0, 1]]],
+  })).toEqual([1]);
 });

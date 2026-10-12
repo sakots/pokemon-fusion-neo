@@ -1,3 +1,5 @@
+import type { SkinColors } from './color';
+
 export interface Point { x: number; y: number }
 export interface PartGeometry {
   width: number;
@@ -12,6 +14,7 @@ export interface FusionPokemon {
   leftName: string;
   rightName: string;
   originalPath: string;
+  colors: SkinColors;
   head: FusionPart;
   body: FusionPart;
 }

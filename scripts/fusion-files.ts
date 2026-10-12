@@ -5,7 +5,8 @@ import { PNG } from 'pngjs';
 import { fusionMasks } from '../src/data/fusion-masks.ts';
 import type { FusionPart, FusionPokemon } from '../src/domain/fusion.ts';
 import type { Pokemon } from '../src/domain/pokemon.ts';
-import { extractParts } from './fusion-materials.ts';
+import { extractColorPixels, extractParts } from './fusion-materials.ts';
+import { recolorPixels, validatePalette } from '../src/domain/color.ts';
 import { DATA_DIR, ROOT, printIssues, readSprite } from './data-files.ts';
 import { inspectSprite, validateCatalog } from './pokemon-data.ts';
 import type { DataIssue } from './pokemon-data.ts';
@@ -26,6 +27,14 @@ async function main() {
       if (!mask.leftName.trim() || !mask.rightName.trim()) throw new Error('名前の分割がありません');
       const original = PNG.sync.read(await readSprite(pokemon.spritePath));
       const parts = extractParts(original, mask);
+      validatePalette(mask.headPalette, 2);
+      const headColors = new Set<string>();
+      for (let index = 0; index < parts.head.data.length; index += 4) {
+        if (parts.head.data[index + 3]) headColors.add(parts.head.data.subarray(index, index + 3).join(','));
+      }
+      if (mask.headPalette.some(color => !headColors.has(color.join(',')))) throw new Error('頭の指定色が素材にありません');
+      const bodyPixels = extractColorPixels(original, parts.body, mask);
+      recolorPixels(parts.body.data, bodyPixels, mask.bodyPalette, mask.headPalette);
       const generated: FusionPart[] = [];
       for (const kind of ['head', 'body'] as const) {
         const { width, height, data, anchor, connectionWidth } = parts[kind];
@@ -47,6 +56,7 @@ async function main() {
       entries.push({
         id: pokemon.id, name: pokemon.name, leftName: mask.leftName, rightName: mask.rightName,
         originalPath: pokemon.spritePath, head: generated[0], body: generated[1],
+        colors: { head: mask.headPalette, body: mask.bodyPalette, bodyPixels },
       });
     } catch (error) {
       issues.push({ id: mask.id, message: error instanceof Error ? error.message : String(error) });
@@ -57,7 +67,7 @@ async function main() {
   if (check) {
     const saved: unknown = JSON.parse(await readFile(metadata, 'utf8'));
     if (!isDeepStrictEqual(saved, entries)) throw new Error('部位情報がマスク定義と一致しません');
-    console.log(`${entries.length}種類・${entries.length * 2}枚の部位素材と接続情報が検証を通りました。`);
+    console.log(`${entries.length}種類・${entries.length * 2}枚の部位素材、接続情報と配色が検証を通りました。`);
   } else {
     await writeFile(metadata, JSON.stringify(entries, null, 2) + '\n');
     console.log(`${entries.length}種類の頭・体の素材を生成しました。`);

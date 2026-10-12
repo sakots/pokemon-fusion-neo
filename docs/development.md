@@ -4,7 +4,7 @@
 
 Node.js 26以上とpnpm 12.11.2を使います。package.jsonのpackageManagerとpnpm-lock.yamlで、使用するpnpmと依存パッケージを記録します。
 
-開発基盤にはReact・TypeScript・Viteによる起動、VitestとReact Testing Libraryによる画面テスト、TypeScriptの型検査、静的ビルドを用意しています。1025種類の元データと元画像も準備済みです。現在の画面では6種類から頭と体を選び、合成結果を表示します。名前・番号での検索、ランダム選択と交換を操作できます。
+開発基盤にはReact・TypeScript・Viteによる起動、VitestとReact Testing Libraryによる画面テスト、TypeScriptの型検査、静的ビルドを用意しています。1025種類の元データと元画像も準備済みです。現在の画面では6種類から頭と体を選び、合成結果を表示します。名前・番号での検索、ランダム選択と交換に加え、皮膚色を頭に合わせる切り替えを操作できます。
 
 以下のコマンドを実行できます。
 
@@ -32,7 +32,7 @@ git diff --check
 
 `pnpm validate:data`は、保存済みの一覧と1025枚の元画像をネットワークなしで検証します。再取得には`pnpm import:data`を使います。取得元とキャッシュの詳細は[データ準備](data-preparation.md)を参照してください。
 
-`pnpm prepare:fusion`でマスク定義から試作の頭・体を生成し、`pnpm validate:fusion`で生成済みのPNGと接続情報を検証します。マスクや接続点を変えた場合は、生成・検証の後にビルドします。詳しくは[画像合成の試作](fusion-prototype.md)を参照してください。
+`pnpm prepare:fusion`でマスク定義から試作の頭・体、接続情報と配色・変換対象のピクセルを生成し、`pnpm validate:fusion`で生成物と定義の一致を検証します。マスク、接続点や配色を変えた場合は、生成・検証の後にビルドします。詳しくは[画像合成の試作](fusion-prototype.md)と[配色の試作](color-matching.md)を参照してください。
 
 ## ブラウザでの確認
 

@@ -3,7 +3,7 @@ import { fusionName } from '../domain/fusion';
 import type { FusionPokemon } from '../domain/fusion';
 import { renderFusion } from '../fusion/render';
 
-export default function FusionPreview({ head, body }: { head: FusionPokemon; body: FusionPokemon }) {
+export default function FusionPreview({ head, body, matchColors = true }: { head: FusionPokemon; body: FusionPokemon; matchColors?: boolean }) {
   const target = useRef<HTMLDivElement>(null);
   const [attempt, setAttempt] = useState(0);
   const [state, setState] = useState<'loading' | 'ready' | 'error'>('loading');
@@ -13,7 +13,7 @@ export default function FusionPreview({ head, body }: { head: FusionPokemon; bod
     let active = true;
     target.current?.replaceChildren();
     setState('loading');
-    renderFusion(head, body).then(canvas => {
+    renderFusion(head, body, matchColors).then(canvas => {
       if (!active) return;
       canvas.setAttribute('role', 'img');
       canvas.setAttribute('aria-label', name);
@@ -21,7 +21,7 @@ export default function FusionPreview({ head, body }: { head: FusionPokemon; bod
       setState('ready');
     }).catch(() => { if (active) setState('error'); });
     return () => { active = false; };
-  }, [head, body, name, attempt]);
+  }, [head, body, name, attempt, matchColors]);
 
   return (
     <figure className="fusion-card" data-head={head.id} data-body={body.id} data-state={state} aria-busy={state === 'loading'}>

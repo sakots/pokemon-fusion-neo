@@ -1,7 +1,32 @@
 import { validatePart } from '../src/domain/fusion.ts';
 import type { Point } from '../src/domain/fusion.ts';
+import { validatePalette } from '../src/domain/color.ts';
+import type { Palette } from '../src/domain/color.ts';
 
 type Polygon = readonly (readonly number[])[];
+
+export function extractColorPixels(source: Raster, body: Raster & { anchor: Point }, mask: FusionMask & {
+  bodyPalette: Palette; bodyProtectedPolygons: readonly Polygon[];
+}): number[] {
+  validatePalette(mask.bodyPalette, 1);
+  for (const polygon of mask.bodyProtectedPolygons) validatePolygon(polygon, source.width, source.height);
+  const allowed = new Set(mask.bodyPalette.map(color => color.join(',')));
+  const found = new Set<string>();
+  const indexes: number[] = [];
+  const origin = { x: mask.bodyAnchor.x - body.anchor.x, y: mask.bodyAnchor.y - body.anchor.y };
+  for (let y = 0; y < body.height; y++) for (let x = 0; x < body.width; x++) {
+    const index = y * body.width + x;
+    const offset = index * 4;
+    const key = body.data.subarray(offset, offset + 3).join(',');
+    if (body.data[offset + 3] > 0 && allowed.has(key)
+      && !mask.bodyProtectedPolygons.some(polygon => contains(polygon, origin.x + x + 0.5, origin.y + y + 0.5))) {
+      indexes.push(index);
+      found.add(key);
+    }
+  }
+  if (found.size !== allowed.size) throw new Error('体の指定色が変換対象の領域にありません');
+  return indexes;
+}
 export interface FusionMask {
   id: number;
   headPolygon: Polygon;

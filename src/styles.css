@@ -167,7 +167,7 @@ button {
   margin-top: 0.75rem;
 }
 
-input {
+input[type="search"] {
   width: 100%;
   min-height: 44px;
   font: inherit;
@@ -176,6 +176,22 @@ input {
   border: 1px solid var(--color-accent);
   border-radius: 0.4rem;
   padding: 0.35rem 0.75rem;
+}
+
+.color-toggle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  margin-top: 0.75rem;
+  cursor: pointer;
+}
+
+.color-toggle input {
+  width: 1.25rem;
+  height: 1.25rem;
+  accent-color: var(--color-accent);
 }
 
 input::placeholder {
