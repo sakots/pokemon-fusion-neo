@@ -4,7 +4,7 @@
 
 Node.js 26以上とpnpm 12.11.2を使います。package.jsonのpackageManagerとpnpm-lock.yamlで、使用するpnpmと依存パッケージを記録します。
 
-開発基盤にはReact・TypeScript・Viteによる起動、VitestとReact Testing Libraryによる画面テスト、TypeScriptの型検査、静的ビルドを用意しています。初期画面は準備状況を表示するものです。ポケモン一覧と画像合成は次の開発段階で追加します。
+開発基盤にはReact・TypeScript・Viteによる起動、VitestとReact Testing Libraryによる画面テスト、TypeScriptの型検査、静的ビルドを用意しています。1025種類の元データと元画像も準備済みです。初期画面は準備状況を表示するもので、選択画面と画像合成は今後追加します。
 
 以下のコマンドを実行できます。
 
@@ -22,13 +22,14 @@ pnpm dev
 ```bash
 pnpm test
 pnpm typecheck
+pnpm validate:data
 pnpm build
 git diff --check
 ```
 
-`pnpm test`は監視せずに終了します。開発中にテストを監視する場合は`pnpm test:watch`を使います。型検査はアプリケーション、テスト、Viteの設定を対象とします。ビルドは型検査の後に行い、distへ出力します。
+`pnpm test`は監視せずに終了します。開発中にテストを監視する場合は`pnpm test:watch`を使います。型検査はアプリケーション、データ準備スクリプト、テスト、Viteの設定を対象とします。ビルドは型検査の後に行い、distへ出力します。
 
-データの検証コマンド`pnpm validate:data`は、データ準備の段階で追加します。
+`pnpm validate:data`は、保存済みの一覧と1025枚の元画像をネットワークなしで検証します。再取得には`pnpm import:data`を使います。取得元とキャッシュの詳細は[データ準備](data-preparation.md)を参照してください。
 
 ## ブラウザでの確認
 

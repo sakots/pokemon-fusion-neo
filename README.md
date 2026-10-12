@@ -2,7 +2,7 @@
 
 [ポケナビのポケモンフュージョンジェネレーター](https://pknavi.com/pokemonfusiongenerator)を参考に、全国図鑑No.0001〜1025のポケモンを合体できる生成機を開発するプロジェクトです。
 
-React・TypeScript・Viteによる開発基盤と、準備状況を表示する初期画面を実装しました。ポケモンのデータ準備と画像合成は未実装です。
+React・TypeScript・Viteによる開発基盤と、準備状況を表示する初期画面を実装しました。1025種類の日本語名・世代・基本形の対応と元画像を準備済みです。選択画面と画像合成は未実装です。
 
 実装にはReact・TypeScriptを使い、パッケージ管理にはpnpmを使います。
 
@@ -11,6 +11,7 @@ React・TypeScript・Viteによる開発基盤と、準備状況を表示する�
 - [元サイトの調査と1025種類への実装方針](docs/fusion-research.md)
 - [実装仕様と開発手順](docs/implementation-plan.md)
 - [開発環境と起動・確認手順](docs/development.md)
+- [ポケモンデータの準備と取得元](docs/data-preparation.md)
 
 ## 更新履歴
 
@@ -22,3 +23,5 @@ React・TypeScript・Viteによる開発基盤と、準備状況を表示する�
 - React・TypeScript・pnpmを前提とした実装仕様、データ準備、テストとリリースの確認手順を資料に追加した。
 - React・TypeScript・Viteの開発基盤と準備状況を表示する初期画面を追加した。
 - pnpmで画面テスト、型検査、ビルドを実行できるようにした。
+- 全国図鑑No.0001〜1025の日本語名・世代・基本形の対応と元画像を追加した。
+- データ取得と、欠番・重複・元画像の不足や不正を検証するコマンドを追加した。

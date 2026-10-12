@@ -1,0 +1,16 @@
+{
+  "importedAt": "2026-10-12T22:00:41.579Z",
+  "sources": {
+    "csvBase": "https://raw.githubusercontent.com/PokeAPI/pokeapi/c80757193bd0889054e36f4209762360bdaa4b95/data/v2/csv",
+    "spriteBase": "https://raw.githubusercontent.com/PokeAPI/sprites/0dc105d5b12416932f29b594078282ab4be045f5",
+    "dataRevision": "c80757193bd0889054e36f4209762360bdaa4b95",
+    "spriteRevision": "0dc105d5b12416932f29b594078282ab4be045f5",
+    "spriteSeries": "sprites/pokemon"
+  },
+  "catalogCount": 1025,
+  "spriteCount": 1025,
+  "dimensions": {
+    "96x96": 1025
+  },
+  "issues": []
+}
