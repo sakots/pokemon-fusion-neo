@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, expect, test, vi } from 'vitest';
 import parts from '../data/fusion-parts.json';
 import { renderFusion } from '../fusion/render';
@@ -24,6 +24,18 @@ test('古い組み合わせの遅い描画結果を反映しない', async () =>
   const { rerender } = render(<FusionPreview head={parts[0]} body={parts[1]} />);
   rerender(<FusionPreview head={parts[1]} body={parts[0]} />);
   const current = await screen.findByRole('img', { name: 'ヒトダネ' });
-  completeOld(document.createElement('canvas'));
-  await waitFor(() => expect(screen.getByRole('img')).toBe(current));
+  await act(async () => { completeOld(document.createElement('canvas')); });
+  expect(screen.getByRole('img')).toBe(current);
+});
+
+test('古い組み合わせの遅い失敗で現在の画像を上書きしない', async () => {
+  let failOld!: (error: Error) => void;
+  mockedRender.mockImplementationOnce(() => new Promise((_resolve, reject) => { failOld = reject; }))
+    .mockResolvedValueOnce(document.createElement('canvas'));
+  const { rerender } = render(<FusionPreview head={parts[0]} body={parts[1]} />);
+  rerender(<FusionPreview head={parts[1]} body={parts[0]} />);
+  const current = await screen.findByRole('img', { name: 'ヒトダネ' });
+  await act(async () => { failOld(new Error('遅れた失敗')); });
+  expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+  expect(screen.getByRole('img')).toBe(current);
 });

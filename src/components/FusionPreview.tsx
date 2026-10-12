@@ -24,14 +24,14 @@ export default function FusionPreview({ head, body }: { head: FusionPokemon; bod
   }, [head, body, name, attempt]);
 
   return (
-    <figure className="fusion-card" data-head={head.id} data-body={body.id} data-state={state}>
+    <figure className="fusion-card" data-head={head.id} data-body={body.id} data-state={state} aria-busy={state === 'loading'}>
       <div className="fusion-image" ref={target} />
-      {state === 'loading' && <p className="preview-message">読み込み中</p>}
+      {state === 'loading' && <p className="preview-message" role="status">読み込み中</p>}
       {state === 'error' && <div>
         <p role="alert">画像を読み込めませんでした。</p>
         <button type="button" onClick={() => setAttempt(value => value + 1)}>再試行</button>
       </div>}
-      <figcaption>
+      <figcaption aria-live="polite" aria-atomic="true">
         <strong>{name}</strong>
         <small>{head.name} × {body.name}</small>
       </figcaption>
