@@ -1,0 +1,74 @@
+:root {
+  font-family: system-ui, sans-serif;
+  color: #1a332f;
+  background: #f3f7f1;
+  --color-accent: #14624e;
+  --color-muted: #51605b;
+  --color-surface: #fff;
+  --space: 1.5rem;
+  --font-body: 1rem;
+  font-size: var(--font-body);
+  line-height: 1.8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.app {
+  width: min(100%, 48rem);
+  margin: 0 auto;
+  padding: clamp(2rem, 8vw, 6rem) var(--space);
+  overflow-wrap: anywhere;
+}
+
+.eyebrow {
+  color: var(--color-accent);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+h1 {
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.intro,
+footer {
+  color: var(--color-muted);
+}
+
+.preparation {
+  background: var(--color-surface);
+  border: 1px solid #cbd9cf;
+  border-top: 4px solid var(--color-accent);
+  border-radius: 1rem;
+  padding: var(--space);
+  margin: calc(var(--space) * 2) 0;
+}
+
+h2 {
+  color: var(--color-accent);
+  font-size: 1.25rem;
+  margin-top: 0;
+}
+
+.preparation p:last-child {
+  margin-bottom: 0;
+}
+
+a {
+  color: var(--color-accent);
+  text-underline-offset: 0.2em;
+}
+
+a:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
