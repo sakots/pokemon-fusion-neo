@@ -13,6 +13,8 @@
     "test:watch": "vitest",
     "import:data": "node scripts/import-data.ts",
     "validate:data": "node scripts/validate-data.ts",
+    "prepare:fusion": "node scripts/fusion-files.ts",
+    "validate:fusion": "node scripts/fusion-files.ts --check",
     "typecheck": "tsc --noEmit",
     "build": "pnpm typecheck && vite build",
     "preview": "vite preview"

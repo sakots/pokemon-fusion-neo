@@ -20,7 +20,7 @@ async function main() {
   }
   console.log(`全国図鑑1〜1025: 一覧1025件・元画像${assets.validCount}枚が検証を通りました。`);
   console.log('画像寸法:', JSON.stringify(assets.dimensions));
-  console.log('頭・体の合成素材は未検証です。');
+  console.log('部位素材は pnpm validate:fusion で別に検証してください。');
 }
 
 main().catch((error: unknown) => {

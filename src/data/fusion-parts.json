@@ -1,0 +1,164 @@
+[
+  {
+    "id": 1,
+    "name": "フシギダネ",
+    "leftName": "フシギ",
+    "rightName": "ダネ",
+    "originalPath": "/assets/pokemon/1.png",
+    "head": {
+      "path": "/assets/fusion/1-head.png",
+      "width": 25,
+      "height": 22,
+      "anchor": {
+        "x": 16,
+        "y": 19
+      },
+      "connectionWidth": 12
+    },
+    "body": {
+      "path": "/assets/fusion/1-body.png",
+      "width": 32,
+      "height": 35,
+      "anchor": {
+        "x": 11,
+        "y": 23
+      },
+      "connectionWidth": 12
+    }
+  },
+  {
+    "id": 4,
+    "name": "ヒトカゲ",
+    "leftName": "ヒト",
+    "rightName": "カゲ",
+    "originalPath": "/assets/pokemon/4.png",
+    "head": {
+      "path": "/assets/fusion/4-head.png",
+      "width": 19,
+      "height": 20,
+      "anchor": {
+        "x": 11,
+        "y": 18
+      },
+      "connectionWidth": 10
+    },
+    "body": {
+      "path": "/assets/fusion/4-body.png",
+      "width": 40,
+      "height": 34,
+      "anchor": {
+        "x": 13,
+        "y": 9
+      },
+      "connectionWidth": 10
+    }
+  },
+  {
+    "id": 23,
+    "name": "アーボ",
+    "leftName": "アー",
+    "rightName": "ボ",
+    "originalPath": "/assets/pokemon/23.png",
+    "head": {
+      "path": "/assets/fusion/23-head.png",
+      "width": 23,
+      "height": 24,
+      "anchor": {
+        "x": 15,
+        "y": 21
+      },
+      "connectionWidth": 10
+    },
+    "body": {
+      "path": "/assets/fusion/23-body.png",
+      "width": 43,
+      "height": 46,
+      "anchor": {
+        "x": 19,
+        "y": 25
+      },
+      "connectionWidth": 10
+    }
+  },
+  {
+    "id": 25,
+    "name": "ピカチュウ",
+    "leftName": "ピカ",
+    "rightName": "チュウ",
+    "originalPath": "/assets/pokemon/25.png",
+    "head": {
+      "path": "/assets/fusion/25-head.png",
+      "width": 30,
+      "height": 27,
+      "anchor": {
+        "x": 11,
+        "y": 25
+      },
+      "connectionWidth": 12
+    },
+    "body": {
+      "path": "/assets/fusion/25-body.png",
+      "width": 41,
+      "height": 37,
+      "anchor": {
+        "x": 12,
+        "y": 15
+      },
+      "connectionWidth": 12
+    }
+  },
+  {
+    "id": 81,
+    "name": "コイル",
+    "leftName": "コ",
+    "rightName": "イル",
+    "originalPath": "/assets/pokemon/81.png",
+    "head": {
+      "path": "/assets/fusion/81-head.png",
+      "width": 22,
+      "height": 24,
+      "anchor": {
+        "x": 11,
+        "y": 20
+      },
+      "connectionWidth": 12
+    },
+    "body": {
+      "path": "/assets/fusion/81-body.png",
+      "width": 37,
+      "height": 25,
+      "anchor": {
+        "x": 17,
+        "y": 17
+      },
+      "connectionWidth": 12
+    }
+  },
+  {
+    "id": 102,
+    "name": "タマタマ",
+    "leftName": "タマ",
+    "rightName": "タマ",
+    "originalPath": "/assets/pokemon/102.png",
+    "head": {
+      "path": "/assets/fusion/102-head.png",
+      "width": 20,
+      "height": 26,
+      "anchor": {
+        "x": 9,
+        "y": 23
+      },
+      "connectionWidth": 14
+    },
+    "body": {
+      "path": "/assets/fusion/102-body.png",
+      "width": 56,
+      "height": 38,
+      "anchor": {
+        "x": 25,
+        "y": 26
+      },
+      "connectionWidth": 14
+    }
+  }
+]
