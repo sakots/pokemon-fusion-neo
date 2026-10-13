@@ -69,7 +69,8 @@ a {
 
 a:focus-visible,
 button:focus-visible,
-input:focus-visible {
+input:focus-visible,
+select:focus-visible {
   outline: 3px solid var(--color-accent);
   outline-offset: 4px;
   border-radius: 2px;
@@ -178,7 +179,8 @@ button {
   margin-top: 0.75rem;
 }
 
-input[type="search"] {
+input[type="search"],
+.pokemon-picker select {
   width: 100%;
   min-height: 44px;
   font: inherit;
@@ -216,37 +218,14 @@ input::placeholder {
   font-size: 0.85rem;
 }
 
-.pokemon-list {
-  display: grid;
-  gap: 0.5rem;
-  list-style: none;
-  margin: 0 0 1rem;
-  padding: 0;
-}
-
-.pokemon-list button,
 .random-button {
   width: 100%;
   min-height: 44px;
-}
-
-.pokemon-list button {
-  text-align: left;
-}
-
-.pokemon-list button[aria-pressed="true"] {
-  color: var(--color-surface);
-  background: var(--color-accent);
+  margin-top: 1rem;
 }
 
 @media (min-width: 640px) {
   .picker-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 900px) {
-  .pokemon-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

@@ -12,6 +12,7 @@ export default function PokemonPicker({ side, label, pokemon, selected, onSelect
 }) {
   const [query, setQuery] = useState('');
   const matches = searchPokemon(pokemon, query);
+  const selectedMatches = matches.some(entry => entry.id === selected.id);
   const numberedName = (entry: FusionPokemon) => `No.${String(entry.id).padStart(4, '0')} ${entry.name}`;
 
   return (
@@ -24,16 +25,15 @@ export default function PokemonPicker({ side, label, pokemon, selected, onSelect
       <label htmlFor={`${side}-search`}>{label}を検索</label>
       <input id={`${side}-search`} type="search" value={query} placeholder="名前または図鑑番号"
         onChange={event => setQuery(event.target.value)} />
-      <p className="search-status" role="status">
+      <p id={`${side}-search-status`} className="search-status" role="status">
         {matches.length ? `${matches.length}種類` : '該当するポケモンがありません'}
       </p>
-      <ul className="pokemon-list">
-        {matches.map(entry => <li key={entry.id}>
-          <button type="button" aria-pressed={selected.id === entry.id} onClick={() => onSelect(entry.id)}>
-            {numberedName(entry)}
-          </button>
-        </li>)}
-      </ul>
+      <label htmlFor={`${side}-select`}>{label}を選択</label>
+      <select id={`${side}-select`} value={selected.id} disabled={matches.length === 0}
+        aria-describedby={`${side}-search-status`} onChange={event => onSelect(Number(event.target.value))}>
+        {!selectedMatches && <option value={selected.id} disabled>{numberedName(selected)}</option>}
+        {matches.map(entry => <option key={entry.id} value={entry.id}>{numberedName(entry)}</option>)}
+      </select>
       <button type="button" className="random-button" onClick={onRandom}>{label}をランダム</button>
     </section>
   );
