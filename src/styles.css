@@ -98,8 +98,19 @@ canvas {
   image-rendering: pixelated;
 }
 
-.fusion-image {
+.fusion-visual {
   height: 128px;
+  display: grid;
+  place-items: center;
+}
+
+.fusion-visual > * {
+  grid-area: 1 / 1;
+}
+
+.fusion-image {
+  width: 100%;
+  height: 100%;
   display: grid;
   place-items: center;
 }
