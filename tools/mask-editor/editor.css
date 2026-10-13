@@ -8,3 +8,4 @@
 .editor-images canvas { display: block; width: 288px; max-width: 100%; height: auto; image-rendering: pixelated; background: repeating-conic-gradient(#eee 0% 25%, #fff 0% 50%) 0 0 / 16px 16px; }
 .editor-images figure:first-child canvas { width: 384px; cursor: crosshair; }
 .mask-editor [role="alert"] { color: #962827; }
+.mask-editor input[type="color"] { width: 64px; min-height: 44px; padding: 4px; border: 1px solid #51605b; border-radius: .3rem; background: white; }

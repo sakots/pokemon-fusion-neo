@@ -5,7 +5,7 @@ import fusionMasks from '../src/data/fusion-masks.json';
 import { parseMask, prepareMask, mergeMask, readGeometry } from './mask-definition.ts';
 
 describe('部位定義の編集・取込', () => {
-  it('既存6種類を検証し、頭・体と色の対象を作れる', async () => {
+  it('151種類を検証し、頭・体と色の対象を作れる', async () => {
     for (const value of fusionMasks) {
       const mask = parseMask(value);
       const source = PNG.sync.read(await readFile(`public/assets/pokemon/${mask.id}.png`));
@@ -29,9 +29,10 @@ describe('部位定義の編集・取込', () => {
     expect(() => prepareMask(source, { ...fusionMasks[0], headAnchor: { x: 97, y: 52 } })).toThrow();
   });
   it('追加と置換を番号順に返し、元の一覧を変更しない', () => {
-    const original = [fusionMasks[1], fusionMasks[0]];
+    const charmander = fusionMasks.find(mask => mask.id === 4)!;
+    const original = [charmander, fusionMasks[0]];
     const replacement = { ...fusionMasks[0], leftName: 'テスト' };
-    expect(mergeMask(original, replacement)).toEqual([replacement, fusionMasks[1]]);
+    expect(mergeMask(original, replacement)).toEqual([replacement, charmander]);
     expect(mergeMask(original, { ...fusionMasks[0], id: 7 }).map(mask => mask.id)).toEqual([1, 4, 7]);
     expect(original[1].leftName).toBe('フシギ');
     expect(() => mergeMask([fusionMasks[0], fusionMasks[0]], replacement)).toThrow();

@@ -7,14 +7,14 @@ vi.mock('./fusion/render', () => ({ renderFusion: vi.fn(async () => document.cre
 
 afterEach(() => { vi.restoreAllMocks(); });
 
-test('6種類の試作と初期の頭・体・合体結果を伝える', async () => {
+test('151種類の試作と初期の頭・体・合体結果を伝える', async () => {
   render(<App />);
 
   expect(
     screen.getByRole('heading', { level: 1, name: 'ポケモンフュージョン Neo' }),
   ).toBeInTheDocument();
   const notice = screen.getByRole('region', { name: '試作の状況' });
-  expect(notice).toHaveTextContent('試作：6種類');
+  expect(notice).toHaveTextContent('試作：151種類');
   expect(notice).toHaveTextContent('形や配色は調整中');
   expect(notice).toHaveTextContent('1025種類への対応は準備中');
   expect(within(screen.getByRole('region', { name: '頭' })).getByRole('button', { name: 'No.0001 フシギダネ' })).toHaveAttribute('aria-pressed', 'true');
@@ -36,9 +36,9 @@ test('配色は初期状態で合わせ、切り替えても選択と検索語�
   expect(await screen.findByRole('img', { name: 'ヒトダネ' })).toBeInTheDocument();
   vi.spyOn(Math, 'random').mockReturnValueOnce(0.999999).mockReturnValueOnce(0);
   fireEvent.click(screen.getByRole('button', { name: '両方をランダム' }));
-  expect(await screen.findByRole('img', { name: 'タマダネ' })).toBeInTheDocument();
+  expect(await screen.findByRole('img', { name: 'ミュダネ' })).toBeInTheDocument();
   expect(toggle).not.toBeChecked();
-  expect(vi.mocked(renderFusion)).toHaveBeenLastCalledWith(expect.objectContaining({ id: 102 }), expect.objectContaining({ id: 1 }), false);
+  expect(vi.mocked(renderFusion)).toHaveBeenLastCalledWith(expect.objectContaining({ id: 151 }), expect.objectContaining({ id: 1 }), false);
   expect(screen.getByRole('searchbox', { name: '頭を検索' })).toHaveValue('1');
 });
 
@@ -48,7 +48,7 @@ test('かな・半角の検索で候補を選び、0件でも選択と結果を�
   const head = within(screen.getByRole('region', { name: '頭' }));
   fireEvent.click(head.getByRole('button', { name: 'No.0025 ピカチュウ' }));
   expect(await screen.findByRole('img', { name: 'ピカカゲ' })).toBeInTheDocument();
-  fireEvent.change(screen.getByRole('searchbox', { name: '頭を検索' }), { target: { value: 'ミュウ' } });
+  fireEvent.change(screen.getByRole('searchbox', { name: '頭を検索' }), { target: { value: '未対応' } });
   expect(head.getByRole('status')).toHaveTextContent('該当するポケモンがありません');
   expect(screen.getByRole('img', { name: 'ピカカゲ' })).toBeInTheDocument();
   expect(head.getByText('選択中：No.0025 ピカチュウ')).toBeInTheDocument();
@@ -78,11 +78,23 @@ test('ランダムは検索結果に関係なく片側・両側を選ぶ', async
   fireEvent.change(screen.getByRole('searchbox', { name: '頭を検索' }), { target: { value: 'ミュウ' } });
   random.mockReturnValue(0.999999);
   fireEvent.click(screen.getByRole('button', { name: '頭をランダム' }));
-  expect(await screen.findByRole('img', { name: 'タマカゲ' })).toBeInTheDocument();
+  expect(await screen.findByRole('img', { name: 'ミュカゲ' })).toBeInTheDocument();
   random.mockReturnValue(0);
   fireEvent.click(screen.getByRole('button', { name: '体をランダム' }));
-  expect(await screen.findByRole('img', { name: 'タマダネ' })).toBeInTheDocument();
+  expect(await screen.findByRole('img', { name: 'ミュダネ' })).toBeInTheDocument();
   random.mockReturnValueOnce(0).mockReturnValueOnce(0.999999);
   fireEvent.click(screen.getByRole('button', { name: '両方をランダム' }));
-  expect(await screen.findByRole('img', { name: 'フシギタマ' })).toBeInTheDocument();
+  expect(await screen.findByRole('img', { name: 'フシギウ' })).toBeInTheDocument();
+});
+
+test('第1世代の末尾151番を検索し、頭と体の両方に使える', async () => {
+  render(<App />);
+  fireEvent.change(screen.getByRole('searchbox', { name: '体を検索' }), { target: { value: '１５１' } });
+  fireEvent.click(within(screen.getByRole('region', { name: '体' })).getByRole('button', { name: 'No.0151 ミュウ' }));
+  expect(await screen.findByRole('img', { name: 'フシギウ' })).toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button', { name: '頭と体を交換' }));
+  expect(await screen.findByRole('img', { name: 'ミュダネ' })).toBeInTheDocument();
+  fireEvent.change(screen.getByRole('searchbox', { name: '体を検索' }), { target: { value: 'ミュウ' } });
+  fireEvent.click(within(screen.getByRole('region', { name: '体' })).getByRole('button', { name: 'No.0151 ミュウ' }));
+  expect(await screen.findByRole('img', { name: 'ミュウ' })).toBeInTheDocument();
 });
