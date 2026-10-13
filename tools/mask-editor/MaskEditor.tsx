@@ -32,6 +32,7 @@ export function MaskEditor({ loadRaster = loadOriginal }: { loadRaster?: (path: 
   const [query, setQuery] = useState('');
   const [draft, setDraft] = useState(() => serialize(initialMask(1)));
   const [mode, setMode] = useState('headPolygon');
+  const [protectedPoints, setProtectedPoints] = useState<number[][]>([]);
   const [loaded, setLoaded] = useState<{ id: number; source: Raster } | null>(null);
   const [failure, setFailure] = useState('');
   const pokemon = catalog.find(entry => entry.id === id)!;
@@ -55,8 +56,14 @@ export function MaskEditor({ loadRaster = loadOriginal }: { loadRaster?: (path: 
   const geometry = useMemo(() => {
     try { return readGeometry(JSON.parse(draft)); } catch { return null; }
   }, [draft]);
+  const overlay = geometry && protectedPoints.length
+    ? { ...geometry, bodyProtectedPolygons: [...geometry.bodyProtectedPolygons, protectedPoints] } : geometry;
   function click(x: number, y: number) {
     if (!source) return;
+    if (mode === 'bodyProtectedPolygon') {
+      if (geometry) setProtectedPoints(points => [...points, [x, y]]);
+      return;
+    }
     try {
       const mask = JSON.parse(draft) as MaskDefinition;
       if (mode === 'headAnchor' || mode === 'bodyAnchor') mask[mode] = { x, y };
@@ -77,8 +84,14 @@ export function MaskEditor({ loadRaster = loadOriginal }: { loadRaster?: (path: 
     mask.headPolygon = mask.headPolygon.slice(0, -1);
     setDraft(serialize(mask));
   }
+  function addProtectedPolygon() {
+    if (!source || !geometry || mode !== 'bodyProtectedPolygon' || protectedPoints.length < 3) return;
+    const mask = JSON.parse(draft) as MaskDefinition;
+    mask.bodyProtectedPolygons = [...mask.bodyProtectedPolygons, protectedPoints];
+    setDraft(serialize(mask)); setProtectedPoints([]);
+  }
   function save() {
-    if (!validation.result || !validation.mask || failure) return;
+    if (!validation.result || !validation.mask || failure || protectedPoints.length) return;
     const url = URL.createObjectURL(new Blob([serialize(validation.mask) + '\n'], { type: 'application/json' }));
     const link = document.createElement('a'); link.href = url; link.download = `fusion-mask-${id}.json`; link.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
@@ -89,26 +102,30 @@ export function MaskEditor({ loadRaster = loadOriginal }: { loadRaster?: (path: 
     <p>定義済み {definitions.length}/1025種類。対象の変更で編集中の内容を破棄します。先にJSONを保存してください。</p>
     <label>番号・名前で検索<input type="search" value={query} onChange={event => setQuery(event.target.value)} /></label>
     <label>編集対象<select value={id} onChange={event => {
-      const next = Number(event.target.value); setId(next); setDraft(serialize(initialMask(next)));
+      const next = Number(event.target.value); setId(next); setDraft(serialize(initialMask(next))); setProtectedPoints([]);
     }}>
       {!candidates.some(entry => entry.id === id) && <option value={id}>No.{id} {pokemon.name}（選択中）</option>}
       {candidates.map(entry => <option key={entry.id} value={entry.id}>No.{entry.id} {entry.name}{definitions.some(mask => mask.id === entry.id) ? '（定義済み）' : ''}</option>)}
     </select></label>
     <p role="status">検索結果 {candidates.length}種類</p>
-    <label>クリックの用途<select value={mode} onChange={event => setMode(event.target.value)}>
+    <label>クリックの用途<select value={mode} onChange={event => { setMode(event.target.value); setProtectedPoints([]); }}>
       <option value="headPolygon">頭の多角形に点を追加</option><option value="headAnchor">頭の接続点</option>
       <option value="bodyAnchor">体の接続点</option><option value="headPalette">頭の皮膚色を追加</option><option value="bodyPalette">体の皮膚色を追加</option>
+      <option value="bodyProtectedPolygon">体の保護領域に点を追加</option>
     </select></label>
-    <p>青線は頭、赤線は補完領域、紫線は保護領域。十字は接続点です。接続幅・名前・補完領域・保護領域はJSON欄で編集します。</p>
+    <p>青線は頭、赤線は補完領域、紫線は保護領域。十字は接続点です。接続幅・名前・補完領域はJSON欄で編集します。保護領域はクリックで追加し、JSON欄で修正できます。</p>
     <button type="button" disabled={!geometry?.headPolygon.length} onClick={removeLastHeadPoint}>頭の最後の点を削除</button>
+    {mode === 'bodyProtectedPolygon' && <p role="status">保護領域の未確定の点: {protectedPoints.length}点。3点以上で追加できます。用途の変更で未確定の点を破棄します。</p>}
+    <button type="button" disabled={!source || !geometry || mode !== 'bodyProtectedPolygon' || protectedPoints.length < 3}
+      onClick={addProtectedPolygon}>保護領域を追加</button>
     <div className="editor-images">
-      {source ? <RasterCanvas source={source} label="元画像" mask={geometry ?? undefined} onPoint={click} /> : !failure && <p>元画像を読み込み中…</p>}
+      {source ? <RasterCanvas source={source} label="元画像" mask={overlay ?? undefined} onPoint={click} /> : !failure && <p>元画像を読み込み中…</p>}
       {validation.result && <><RasterCanvas source={validation.result.parts.head} label="頭のプレビュー" />
         <RasterCanvas source={validation.result.parts.body} label="体のプレビュー" /></>}
     </div>
-    <label>部位定義JSON<textarea spellCheck={false} value={draft} onChange={event => setDraft(event.target.value)} /></label>
+    <label>部位定義JSON<textarea spellCheck={false} value={draft} onChange={event => { setDraft(event.target.value); setProtectedPoints([]); }} /></label>
     {error && <p role="alert">{error}</p>}
-    <button type="button" disabled={!validation.result || !!failure} onClick={save}>JSONを保存</button>
+    <button type="button" disabled={!validation.result || !!failure || protectedPoints.length > 0} onClick={save}>JSONを保存</button>
     <p>保存後に <code>pnpm import:mask ファイルのパス</code>、<code>pnpm prepare:fusion</code>、<code>pnpm validate:fusion</code> を実行し、異種との合成結果を確認してください。</p>
     <a href="/">合体画面へ</a>
   </main>;
