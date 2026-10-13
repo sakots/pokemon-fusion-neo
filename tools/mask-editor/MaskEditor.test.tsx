@@ -38,3 +38,31 @@ it('対象変更後は前の読込結果を反映せず、現在の読込失敗�
   expect(screen.getByRole('alert')).toHaveTextContent('画像を読み込めません');
   expect(screen.getByRole('button', { name: 'JSONを保存' })).toBeDisabled();
 });
+
+it('頭の最後の点だけを削除し、3点未満・空・不正JSONでは保存や削除を制御する', async () => {
+  render(<MaskEditor loadRaster={async () => original} />);
+  await waitFor(() => expect(screen.getByRole('button', { name: 'JSONを保存' })).toBeEnabled());
+  const editor = screen.getByLabelText('部位定義JSON') as HTMLTextAreaElement;
+  const initial = JSON.parse(editor.value);
+  fireEvent.click(screen.getByText('元画像'));
+  expect(JSON.parse(editor.value).headPolygon).toEqual([...initial.headPolygon, [43, 52]]);
+  const remove = screen.getByRole('button', { name: '頭の最後の点を削除' });
+  fireEvent.change(screen.getByLabelText('クリックの用途'), { target: { value: 'bodyAnchor' } });
+  fireEvent.click(remove);
+  expect(JSON.parse(editor.value)).toEqual(initial);
+  fireEvent.change(editor, { target: { value: JSON.stringify({ ...initial, headPolygon: initial.headPolygon.slice(0, 3) }) } });
+  fireEvent.click(remove);
+  expect(JSON.parse(editor.value).headPolygon).toHaveLength(2);
+  expect(screen.queryByText('頭のプレビュー')).not.toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'JSONを保存' })).toBeDisabled();
+  fireEvent.click(remove);
+  fireEvent.click(remove);
+  expect(JSON.parse(editor.value)).toEqual({ ...initial, headPolygon: [] });
+  expect(remove).toBeDisabled();
+  fireEvent.change(editor, { target: { value: '{' } });
+  expect(remove).toBeDisabled();
+  fireEvent.click(remove);
+  expect(editor.value).toBe('{');
+  fireEvent.change(editor, { target: { value: JSON.stringify({ ...initial, headPolygon: null }) } });
+  expect(remove).toBeDisabled();
+});

@@ -71,6 +71,12 @@ export function MaskEditor({ loadRaster = loadOriginal }: { loadRaster?: (path: 
       setDraft(serialize(mask));
     } catch { /* 構造が不正な間はJSON欄で修正する。 */ }
   }
+  function removeLastHeadPoint() {
+    if (!geometry?.headPolygon.length) return;
+    const mask = JSON.parse(draft) as MaskDefinition;
+    mask.headPolygon = mask.headPolygon.slice(0, -1);
+    setDraft(serialize(mask));
+  }
   function save() {
     if (!validation.result || !validation.mask || failure) return;
     const url = URL.createObjectURL(new Blob([serialize(validation.mask) + '\n'], { type: 'application/json' }));
@@ -94,6 +100,7 @@ export function MaskEditor({ loadRaster = loadOriginal }: { loadRaster?: (path: 
       <option value="bodyAnchor">体の接続点</option><option value="headPalette">頭の皮膚色を追加</option><option value="bodyPalette">体の皮膚色を追加</option>
     </select></label>
     <p>青線は頭、赤線は補完領域、紫線は保護領域。十字は接続点です。接続幅・名前・補完領域・保護領域はJSON欄で編集します。</p>
+    <button type="button" disabled={!geometry?.headPolygon.length} onClick={removeLastHeadPoint}>頭の最後の点を削除</button>
     <div className="editor-images">
       {source ? <RasterCanvas source={source} label="元画像" mask={geometry ?? undefined} onPoint={click} /> : !failure && <p>元画像を読み込み中…</p>}
       {validation.result && <><RasterCanvas source={validation.result.parts.head} label="頭のプレビュー" />
