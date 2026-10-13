@@ -1,0 +1,10 @@
+.mask-editor { max-width: 76rem; }
+.mask-editor label { display: grid; gap: .5rem; margin-block: 1rem; font-weight: 600; }
+.mask-editor select, .mask-editor textarea { width: 100%; min-height: 44px; padding: .5rem; color: inherit; background: white; border: 1px solid #51605b; border-radius: .3rem; font: inherit; }
+.mask-editor textarea { min-height: 24rem; font-family: monospace; font-size: .875rem; font-weight: 400; }
+.mask-editor select:focus-visible, .mask-editor textarea:focus-visible { outline: 3px solid #14624e; outline-offset: 3px; }
+.editor-images { display: flex; flex-wrap: wrap; gap: 1rem; align-items: start; }
+.editor-images figure { margin: 0; max-width: 100%; }
+.editor-images canvas { display: block; width: 288px; max-width: 100%; height: auto; image-rendering: pixelated; background: repeating-conic-gradient(#eee 0% 25%, #fff 0% 50%) 0 0 / 16px 16px; }
+.editor-images figure:first-child canvas { width: 384px; cursor: crosshair; }
+.mask-editor [role="alert"] { color: #962827; }

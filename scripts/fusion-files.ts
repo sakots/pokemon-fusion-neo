@@ -2,17 +2,17 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { isDeepStrictEqual } from 'node:util';
 import { PNG } from 'pngjs';
-import { fusionMasks } from '../src/data/fusion-masks.ts';
+import maskData from '../src/data/fusion-masks.json' with { type: 'json' };
+import { parseMask, prepareMask } from './mask-definition.ts';
 import type { FusionPart, FusionPokemon } from '../src/domain/fusion.ts';
 import type { Pokemon } from '../src/domain/pokemon.ts';
-import { extractColorPixels, extractParts } from './fusion-materials.ts';
-import { recolorPixels, validatePalette } from '../src/domain/color.ts';
 import { DATA_DIR, ROOT, printIssues, readSprite } from './data-files.ts';
 import { inspectSprite, validateCatalog } from './pokemon-data.ts';
 import type { DataIssue } from './pokemon-data.ts';
 
 async function main() {
   const check = process.argv.includes('--check');
+  const fusionMasks = maskData.map(parseMask);
   const value: unknown = JSON.parse(await readFile(join(DATA_DIR, 'pokemon.json'), 'utf8'));
   const issues: DataIssue[] = validateCatalog(value);
   if (issues.length) { printIssues(issues); process.exitCode = 1; return; }
@@ -26,15 +26,7 @@ async function main() {
       if (!pokemon) throw new Error('試作対象の元データがありません');
       if (!mask.leftName.trim() || !mask.rightName.trim()) throw new Error('名前の分割がありません');
       const original = PNG.sync.read(await readSprite(pokemon.spritePath));
-      const parts = extractParts(original, mask);
-      validatePalette(mask.headPalette, 2);
-      const headColors = new Set<string>();
-      for (let index = 0; index < parts.head.data.length; index += 4) {
-        if (parts.head.data[index + 3]) headColors.add(parts.head.data.subarray(index, index + 3).join(','));
-      }
-      if (mask.headPalette.some(color => !headColors.has(color.join(',')))) throw new Error('頭の指定色が素材にありません');
-      const bodyPixels = extractColorPixels(original, parts.body, mask);
-      recolorPixels(parts.body.data, bodyPixels, mask.bodyPalette, mask.headPalette);
+      const { parts, bodyPixels } = prepareMask(original, mask);
       const generated: FusionPart[] = [];
       for (const kind of ['head', 'body'] as const) {
         const { width, height, data, anchor, connectionWidth } = parts[kind];
