@@ -1,13 +1,14 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import { afterEach, expect, test, vi } from 'vitest';
 import App from './App';
+import parts from './data/fusion-parts.json';
 
 vi.mock('./fusion/render', () => ({ renderFusion: vi.fn(async () => document.createElement('canvas')) }));
 
 afterEach(() => { vi.restoreAllMocks(); });
 
 test('初期の頭・体の選択と合体結果を伝える', async () => {
-  render(<App />);
+  render(<App parts={parts} />);
 
   expect(screen.getByRole('combobox', { name: '頭を選択' })).toHaveValue('1');
   expect(screen.getByRole('combobox', { name: '体を選択' })).toHaveValue('4');
@@ -15,7 +16,7 @@ test('初期の頭・体の選択と合体結果を伝える', async () => {
 });
 
 test('配色は初期状態で合わせ、切り替えても選択と検索語を維持する', async () => {
-  render(<App />);
+  render(<App parts={parts} />);
   const toggle = screen.getByRole('checkbox', { name: '体の色を頭に合わせる' });
   expect(toggle).toBeChecked();
   fireEvent.change(screen.getByRole('searchbox', { name: '頭を検索' }), { target: { value: '1' } });
@@ -33,7 +34,7 @@ test('配色は初期状態で合わせ、切り替えても選択と検索語�
 });
 
 test('かな・半角の検索で候補を選び、0件でも選択と結果を維持する', async () => {
-  render(<App />);
+  render(<App parts={parts} />);
   fireEvent.change(screen.getByRole('searchbox', { name: '頭を検索' }), { target: { value: 'ﾋﾟｶ' } });
   const head = within(screen.getByRole('region', { name: '頭' }));
   const select = head.getByRole('combobox', { name: '頭を選択' });
@@ -57,14 +58,14 @@ test('かな・半角の検索で候補を選び、0件でも選択と結果を�
 });
 
 test('番号で体を選び、同種同士は元の名前を使う', async () => {
-  render(<App />);
+  render(<App parts={parts} />);
   fireEvent.change(screen.getByRole('searchbox', { name: '体を検索' }), { target: { value: '０００１' } });
   fireEvent.change(screen.getByRole('combobox', { name: '体を選択' }), { target: { value: '1' } });
   expect(await screen.findByRole('img', { name: 'フシギダネ' })).toBeInTheDocument();
 });
 
 test('交換を2回行うと元に戻り、検索語はその欄に残る', async () => {
-  render(<App />);
+  render(<App parts={parts} />);
   const search = screen.getByRole('searchbox', { name: '頭を検索' });
   fireEvent.change(search, { target: { value: '1' } });
   fireEvent.click(screen.getByRole('button', { name: '頭と体を交換' }));
@@ -80,7 +81,7 @@ test('交換を2回行うと元に戻り、検索語はその欄に残る', asyn
 
 test('ランダムは検索結果に関係なく片側・両側を選ぶ', async () => {
   const random = vi.spyOn(Math, 'random');
-  render(<App />);
+  render(<App parts={parts} />);
   fireEvent.change(screen.getByRole('searchbox', { name: '頭を検索' }), { target: { value: 'ミュウ' } });
   random.mockReturnValue(0.999999);
   fireEvent.click(screen.getByRole('button', { name: '頭をランダム' }));
@@ -96,7 +97,7 @@ test('ランダムは検索結果に関係なく片側・両側を選ぶ', async
 });
 
 test('第1世代の末尾151番を検索し、頭と体の両方に使える', async () => {
-  render(<App />);
+  render(<App parts={parts} />);
   fireEvent.change(screen.getByRole('searchbox', { name: '体を検索' }), { target: { value: '１５１' } });
   fireEvent.change(screen.getByRole('combobox', { name: '体を選択' }), { target: { value: '151' } });
   expect(await screen.findByRole('img', { name: 'フシギウ' })).toBeInTheDocument();

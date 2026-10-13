@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import FusionPreview from './components/FusionPreview';
 import PokemonPicker from './components/PokemonPicker';
-import parts from './data/fusion-parts.json';
+import type { FusionPokemon } from './domain/fusion';
 import { randomPokemon } from './domain/selection';
 
-export default function App() {
+export default function App({ parts }: { parts: readonly FusionPokemon[] }) {
   const [headId, setHeadId] = useState(1);
   const [bodyId, setBodyId] = useState(4);
   const [matchColors, setMatchColors] = useState(true);
