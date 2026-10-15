@@ -4,7 +4,7 @@
 
 Node.js 26以上とpnpm 12.11.2を使います。package.jsonのpackageManagerとpnpm-lock.yamlで、使用するpnpmと依存パッケージを記録します。
 
-開発基盤にはReact・TypeScript・Viteによる起動、VitestとReact Testing Libraryによる画面テスト、TypeScriptの型検査、静的ビルドを用意しています。1025種類の元データと元画像も準備済みです。画面では第1〜第7世代の809種類から頭と体を選び、合成結果を表示します。名前・番号での検索、ランダム選択と交換に加え、皮膚色を頭に合わせる切り替えを操作できます。
+開発基盤にはReact・TypeScript・Viteによる起動、VitestとReact Testing Libraryによる画面テスト、TypeScriptの型検査、静的ビルドを用意しています。1025種類の元データと元画像も準備済みです。画面では第1〜第8世代の905種類から頭と体を選び、合成結果を表示します。名前・番号での検索、ランダム選択と交換に加え、皮膚色を頭に合わせる切り替えを操作できます。
 
 以下のコマンドを実行できます。
 
@@ -66,4 +66,4 @@ Node.js v26.11.1、pnpm v12.11.2で確認しました。
 
 部位の追加には[部位定義の編集ツール](mask-editor.md)を使います。
 
-現在の素材と確認結果は[第1世代のサンプル](generation-one.md)、[第2世代の追加](generation-two.md)、[第3世代の追加](generation-three.md)、[第4世代の追加](generation-four.md)、[第5世代の追加](generation-five.md)、[第6世代の追加](generation-six.md)、[第7世代の追加](generation-seven.md)を参照してください。
+現在の素材と確認結果は[第1世代のサンプル](generation-one.md)、[第2世代の追加](generation-two.md)、[第3世代の追加](generation-three.md)、[第4世代の追加](generation-four.md)、[第5世代の追加](generation-five.md)、[第6世代の追加](generation-six.md)、[第7世代の追加](generation-seven.md)、[第8世代の追加](generation-eight.md)を参照してください。
