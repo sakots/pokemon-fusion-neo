@@ -5,7 +5,7 @@ import fusionMasks from '../src/data/fusion-masks.json';
 import { parseMask, prepareMask, mergeMask, readGeometry } from './mask-definition.ts';
 
 describe('部位定義の編集・取込', () => {
-  it('151種類を検証し、頭・体と色の対象を作れる', async () => {
+  it('定義済みの各種を検証し、頭・体と色の対象を作れる', async () => {
     for (const value of fusionMasks) {
       const mask = parseMask(value);
       const source = PNG.sync.read(await readFile(`public/assets/pokemon/${mask.id}.png`));

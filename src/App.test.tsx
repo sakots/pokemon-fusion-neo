@@ -28,7 +28,7 @@ test('配色は初期状態で合わせ、切り替えても選択と検索語�
   expect(await screen.findByRole('img', { name: 'ヒトダネ' })).toBeInTheDocument();
   vi.spyOn(Math, 'random').mockReturnValueOnce(0.999999).mockReturnValueOnce(0);
   fireEvent.click(screen.getByRole('button', { name: '両方をランダム' }));
-  expect(await screen.findByRole('img', { name: 'ミュダネ' })).toBeInTheDocument();
+  expect(await screen.findByRole('img', { name: 'デオダネ' })).toBeInTheDocument();
   expect(toggle).not.toBeChecked();
   expect(screen.getByRole('searchbox', { name: '頭を検索' })).toHaveValue('1');
 });
@@ -53,7 +53,7 @@ test('かな・半角の検索で候補を選び、0件でも選択と結果を�
   expect(select).toBeEnabled();
   expect(select).toHaveValue('25');
   expect(head.getByRole('option', { name: 'No.0001 フシギダネ' })).toBeEnabled();
-  expect(head.getByRole('option', { name: 'No.0151 ミュウ' })).toBeEnabled();
+  expect(head.getByRole('option', { name: 'No.0386 デオキシス' })).toBeEnabled();
   expect(screen.getByRole('combobox', { name: '体を選択' })).toHaveValue('4');
 });
 
@@ -85,25 +85,25 @@ test('ランダムは検索結果に関係なく片側・両側を選ぶ', async
   fireEvent.change(screen.getByRole('searchbox', { name: '頭を検索' }), { target: { value: 'ミュウ' } });
   random.mockReturnValue(0.999999);
   fireEvent.click(screen.getByRole('button', { name: '頭をランダム' }));
-  expect(await screen.findByRole('img', { name: 'ミュカゲ' })).toBeInTheDocument();
+  expect(await screen.findByRole('img', { name: 'デオカゲ' })).toBeInTheDocument();
   random.mockReturnValue(0);
   fireEvent.click(screen.getByRole('button', { name: '体をランダム' }));
-  expect(await screen.findByRole('img', { name: 'ミュダネ' })).toBeInTheDocument();
+  expect(await screen.findByRole('img', { name: 'デオダネ' })).toBeInTheDocument();
   random.mockReturnValueOnce(0).mockReturnValueOnce(0.999999);
   fireEvent.click(screen.getByRole('button', { name: '両方をランダム' }));
-  expect(await screen.findByRole('img', { name: 'フシギウ' })).toBeInTheDocument();
+  expect(await screen.findByRole('img', { name: 'フシギキシス' })).toBeInTheDocument();
   expect(screen.getByRole('combobox', { name: '頭を選択' })).toHaveValue('1');
-  expect(screen.getByRole('combobox', { name: '体を選択' })).toHaveValue('151');
+  expect(screen.getByRole('combobox', { name: '体を選択' })).toHaveValue('386');
 });
 
-test('第1世代の末尾151番を検索し、頭と体の両方に使える', async () => {
+test('第3世代の末尾386番を検索し、頭と体の両方に使える', async () => {
   render(<App parts={parts} />);
-  fireEvent.change(screen.getByRole('searchbox', { name: '体を検索' }), { target: { value: '１５１' } });
-  fireEvent.change(screen.getByRole('combobox', { name: '体を選択' }), { target: { value: '151' } });
-  expect(await screen.findByRole('img', { name: 'フシギウ' })).toBeInTheDocument();
+  fireEvent.change(screen.getByRole('searchbox', { name: '体を検索' }), { target: { value: '３８６' } });
+  fireEvent.change(screen.getByRole('combobox', { name: '体を選択' }), { target: { value: '386' } });
+  expect(await screen.findByRole('img', { name: 'フシギキシス' })).toBeInTheDocument();
   fireEvent.click(screen.getByRole('button', { name: '頭と体を交換' }));
-  expect(await screen.findByRole('img', { name: 'ミュダネ' })).toBeInTheDocument();
-  fireEvent.change(screen.getByRole('searchbox', { name: '体を検索' }), { target: { value: 'ミュウ' } });
-  fireEvent.change(screen.getByRole('combobox', { name: '体を選択' }), { target: { value: '151' } });
-  expect(await screen.findByRole('img', { name: 'ミュウ' })).toBeInTheDocument();
+  expect(await screen.findByRole('img', { name: 'デオダネ' })).toBeInTheDocument();
+  fireEvent.change(screen.getByRole('searchbox', { name: '体を検索' }), { target: { value: 'デオキシス' } });
+  fireEvent.change(screen.getByRole('combobox', { name: '体を選択' }), { target: { value: '386' } });
+  expect(await screen.findByRole('img', { name: 'デオキシス' })).toBeInTheDocument();
 });
