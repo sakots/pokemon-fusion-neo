@@ -1,3 +1,4 @@
+// @vitest-environment node
 import { describe, expect, it } from 'vitest';
 import { PNG } from 'pngjs';
 import { readFile } from 'node:fs/promises';
@@ -5,14 +6,12 @@ import fusionMasks from '../src/data/fusion-masks.json';
 import { parseMask, prepareMask, mergeMask, readGeometry } from './mask-definition.ts';
 
 describe('部位定義の編集・取込', () => {
-  it('定義済みの各種を検証し、頭・体と色の対象を作れる', async () => {
-    for (const value of fusionMasks) {
-      const mask = parseMask(value);
-      const source = PNG.sync.read(await readFile(`public/assets/pokemon/${mask.id}.png`));
-      const result = prepareMask(source, mask);
-      expect(result.bodyPixels.length).toBeGreaterThan(0);
-      expect(result.parts.head.width).toBeGreaterThan(0);
-    }
+  it.each(fusionMasks)('No.$idの頭・体と色の対象を作れる', async value => {
+    const mask = parseMask(value);
+    const source = PNG.sync.read(await readFile(`public/assets/pokemon/${mask.id}.png`));
+    const result = prepareMask(source, mask);
+    expect(result.bodyPixels.length).toBeGreaterThan(0);
+    expect(result.parts.head.width).toBeGreaterThan(0);
   });
   it.each([null, {}, { ...fusionMasks[0], id: 1026 }, { ...fusionMasks[0], headAnchor: null },
     { ...fusionMasks[0], patches: [{}] }, { ...fusionMasks[0], leftName: ' ' },
