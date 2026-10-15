@@ -28,7 +28,7 @@ test('配色は初期状態で合わせ、切り替えても選択と検索語�
   expect(await screen.findByRole('img', { name: 'ヒトダネ' })).toBeInTheDocument();
   vi.spyOn(Math, 'random').mockReturnValueOnce(0.999999).mockReturnValueOnce(0);
   fireEvent.click(screen.getByRole('button', { name: '両方をランダム' }));
-  expect(await screen.findByRole('img', { name: 'ゲノダネ' })).toBeInTheDocument();
+  expect(await screen.findByRole('img', { name: 'ボルダネ' })).toBeInTheDocument();
   expect(toggle).not.toBeChecked();
   expect(screen.getByRole('searchbox', { name: '頭を検索' })).toHaveValue('1');
 });
@@ -53,7 +53,7 @@ test('かな・半角の検索で候補を選び、0件でも選択と結果を�
   expect(select).toBeEnabled();
   expect(select).toHaveValue('25');
   expect(head.getByRole('option', { name: 'No.0001 フシギダネ' })).toBeEnabled();
-  expect(head.getByRole('option', { name: 'No.0649 ゲノセクト' })).toBeEnabled();
+  expect(head.getByRole('option', { name: 'No.0721 ボルケニオン' })).toBeEnabled();
   expect(screen.getByRole('combobox', { name: '体を選択' })).toHaveValue('4');
 });
 
@@ -85,25 +85,30 @@ test('ランダムは検索結果に関係なく片側・両側を選ぶ', async
   fireEvent.change(screen.getByRole('searchbox', { name: '頭を検索' }), { target: { value: 'ミュウ' } });
   random.mockReturnValue(0.999999);
   fireEvent.click(screen.getByRole('button', { name: '頭をランダム' }));
-  expect(await screen.findByRole('img', { name: 'ゲノカゲ' })).toBeInTheDocument();
+  expect(await screen.findByRole('img', { name: 'ボルカゲ' })).toBeInTheDocument();
   random.mockReturnValue(0);
   fireEvent.click(screen.getByRole('button', { name: '体をランダム' }));
-  expect(await screen.findByRole('img', { name: 'ゲノダネ' })).toBeInTheDocument();
+  expect(await screen.findByRole('img', { name: 'ボルダネ' })).toBeInTheDocument();
   random.mockReturnValueOnce(0).mockReturnValueOnce(0.999999);
   fireEvent.click(screen.getByRole('button', { name: '両方をランダム' }));
-  expect(await screen.findByRole('img', { name: 'フシギセクト' })).toBeInTheDocument();
+  expect(await screen.findByRole('img', { name: 'フシギケニオン' })).toBeInTheDocument();
   expect(screen.getByRole('combobox', { name: '頭を選択' })).toHaveValue('1');
-  expect(screen.getByRole('combobox', { name: '体を選択' })).toHaveValue('649');
+  expect(screen.getByRole('combobox', { name: '体を選択' })).toHaveValue('721');
 });
 
-test('第5世代の末尾649番を検索し、頭と体の両方に使える', async () => {
+test('第6世代の末尾721番を検索し、頭と体の両方に使える', async () => {
   render(<App parts={parts} />);
-  fireEvent.change(screen.getByRole('searchbox', { name: '体を検索' }), { target: { value: '６４９' } });
-  fireEvent.change(screen.getByRole('combobox', { name: '体を選択' }), { target: { value: '649' } });
-  expect(await screen.findByRole('img', { name: 'フシギセクト' })).toBeInTheDocument();
+  fireEvent.change(screen.getByRole('searchbox', { name: '頭を検索' }), { target: { value: '６５０' } });
+  fireEvent.change(screen.getByRole('combobox', { name: '頭を選択' }), { target: { value: '650' } });
+  expect(screen.getByRole('combobox', { name: '頭を選択' })).toHaveValue('650');
+  fireEvent.change(screen.getByRole('searchbox', { name: '頭を検索' }), { target: { value: '' } });
+  fireEvent.change(screen.getByRole('combobox', { name: '頭を選択' }), { target: { value: '1' } });
+  fireEvent.change(screen.getByRole('searchbox', { name: '体を検索' }), { target: { value: '７２１' } });
+  fireEvent.change(screen.getByRole('combobox', { name: '体を選択' }), { target: { value: '721' } });
+  expect(await screen.findByRole('img', { name: 'フシギケニオン' })).toBeInTheDocument();
   fireEvent.click(screen.getByRole('button', { name: '頭と体を交換' }));
-  expect(await screen.findByRole('img', { name: 'ゲノダネ' })).toBeInTheDocument();
-  fireEvent.change(screen.getByRole('searchbox', { name: '体を検索' }), { target: { value: 'ゲノセクト' } });
-  fireEvent.change(screen.getByRole('combobox', { name: '体を選択' }), { target: { value: '649' } });
-  expect(await screen.findByRole('img', { name: 'ゲノセクト' })).toBeInTheDocument();
+  expect(await screen.findByRole('img', { name: 'ボルダネ' })).toBeInTheDocument();
+  fireEvent.change(screen.getByRole('searchbox', { name: '体を検索' }), { target: { value: 'ぼるけにおん' } });
+  fireEvent.change(screen.getByRole('combobox', { name: '体を選択' }), { target: { value: '721' } });
+  expect(await screen.findByRole('img', { name: 'ボルケニオン' })).toBeInTheDocument();
 });
