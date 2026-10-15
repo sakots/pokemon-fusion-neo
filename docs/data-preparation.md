@@ -64,6 +64,6 @@ pnpm validate:data
 | 不足・不正 | 0件 |
 | TDD | 未実装の検証処理でテストの失敗を確認し、実装後にデータ用22件と画面用1件が成功した |
 
-No.0001、0025、1025の元画像を目視でも確認しました。全種の部位分割、配色と合体画像の品質確認は未実施です。最初の6種類の部位素材と合成処理については[画像合成の試作](fusion-prototype.md)を参照してください。
+No.0001、0025、1025の元画像を目視でも確認しました。この表は元データの準備時点の結果です。全1025種類の部位・配色の整備は[第9世代の追加](generation-nine.md)まで進み、全組み合わせの品質調整は続けています。最初の6種類の部位素材と合成処理については[画像合成の試作](fusion-prototype.md)を参照してください。
 
-部位・配色の整備と確認結果は[第1世代のサンプル](generation-one.md)、[第2世代の追加](generation-two.md)、[第3世代の追加](generation-three.md)、[第4世代の追加](generation-four.md)、[第5世代の追加](generation-five.md)、[第6世代の追加](generation-six.md)、[第7世代の追加](generation-seven.md)、[第8世代の追加](generation-eight.md)に記載します。
+部位・配色の整備と確認結果は[第1世代のサンプル](generation-one.md)、[第2世代の追加](generation-two.md)、[第3世代の追加](generation-three.md)、[第4世代の追加](generation-four.md)、[第5世代の追加](generation-five.md)、[第6世代の追加](generation-six.md)、[第7世代の追加](generation-seven.md)、[第8世代の追加](generation-eight.md)、[第9世代の追加](generation-nine.md)に記載します。

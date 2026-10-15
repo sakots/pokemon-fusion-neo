@@ -5,16 +5,16 @@ import parts from '../src/data/fusion-parts.json';
 import catalog from '../src/data/pokemon.json';
 import { layoutFusion } from '../src/domain/fusion.ts';
 
-test('第1〜第8世代905種類の部位と名前分割を欠番・重複なく揃える', () => {
-  const ids = Array.from({ length: 905 }, (_, index) => index + 1);
+test('第1〜第9世代1025種類の部位と名前分割を欠番・重複なく揃える', () => {
+  const ids = Array.from({ length: 1025 }, (_, index) => index + 1);
   expect(masks.map(mask => mask.id)).toEqual(ids);
   expect(parts.map(entry => entry.id)).toEqual(ids);
   for (const entry of parts) {
     expect(entry.leftName + entry.rightName).toBe(catalog.find(pokemon => pokemon.id === entry.id)?.name);
   }
 });
-test('905種類の全819025組み合わせで接続計算が成功し、出力の余白に収まる', () => {
-  expect(parts).toHaveLength(905);
+test('1025種類の全1050625組み合わせで接続計算が成功し、出力の余白に収まる', () => {
+  expect(parts).toHaveLength(1025);
   let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
   for (const head of parts) for (const body of parts) {
     const layout = layoutFusion(head.head, body.body);

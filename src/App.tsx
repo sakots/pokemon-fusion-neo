@@ -32,7 +32,6 @@ export default function App({ parts }: { parts: readonly FusionPokemon[] }) {
       <section className="preparation" aria-label="試作の状況">
         <h2>試作：{parts.length}種類</h2>
         <p>{parts.length}種類から頭と体を選んで合体できます。形や配色は調整中です。</p>
-        <p>1025種類への対応は準備中です。</p>
       </section>
 
       <section className="result-panel" aria-labelledby="result-title">
