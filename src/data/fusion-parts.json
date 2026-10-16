@@ -157334,8 +157334,8 @@
   {
     "id": 252,
     "name": "キモリ",
-    "leftName": "キ",
-    "rightName": "モリ",
+    "leftName": "キモ",
+    "rightName": "リ",
     "originalPath": "/assets/pokemon/252.png",
     "head": {
       "path": "/assets/fusion/252-head.png",
