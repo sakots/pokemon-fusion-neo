@@ -8,25 +8,20 @@
 
 ## 資料
 
-- [元サイトの調査と1025種類への実装方針](docs/fusion-research.md)
-- [実装仕様と開発手順](docs/implementation-plan.md)
+- [資料一覧：現行仕様・手順・検証記録](docs/README.md)
+- [OpenSpecの運用と変更提案の進め方](docs/openspec.md)
 - [開発環境と起動・確認手順](docs/development.md)
-- [ポケモンデータの準備と取得元](docs/data-preparation.md)
-- [画像合成の試作と確認結果](docs/fusion-prototype.md)
-- [第1世代151種類のサンプル](docs/generation-one.md)
-- [第2世代100種類の追加と確認結果](docs/generation-two.md)
-- [第3世代135種類の追加と確認結果](docs/generation-three.md)
-- [第4世代107種類の追加と確認結果](docs/generation-four.md)
-- [第5世代156種類の追加と確認結果](docs/generation-five.md)
-- [第6世代72種類の追加と確認結果](docs/generation-six.md)
-- [第7世代88種類の追加と確認結果](docs/generation-seven.md)
-- [第8世代96種類の追加と確認結果](docs/generation-eight.md)
-- [第9世代120種類の追加と全1025種類の確認結果](docs/generation-nine.md)
-- [試作の操作画面](docs/selection-ui.md)
-- [体の配色を頭に合わせる試作と比較画像](docs/color-matching.md)
-- [1025種類の部位定義を追加する編集ツール](docs/mask-editor.md)
+- [構成と開発・リリース方針](docs/implementation-plan.md)
+
+現行仕様は`openspec/specs/`、提案中の変更は`openspec/changes/`で管理します。`docs/`には開発・素材編集の手順、設計の補足、調査と過去の検証記録をまとめます。
 
 ## 更新履歴
+
+### [2026/10/17] v0.1.0
+
+- OpenSpecの設定に、日本語での仕様記述と資料先行・TDD・実動作確認の規則を追加した。
+- データ・合成・選択画面・部位編集の現行仕様をOpenSpecに整理し、開発手順と過去の検証記録の役割を明確にした。
+- 資料一覧とOpenSpecの運用手順を追加し、実装計画とREADMEの参照先を整理した。
 
 ### [2026/10/16] v0.1.0
 

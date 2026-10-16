@@ -1,32 +1,35 @@
 schema: spec-driven
 
-# Project context (optional)
-# Add only constraints that should guide OpenSpec artifacts and workflows.
-# Include constraints an agent cannot infer by reading the code.
-# Keep general project documentation and discoverable codebase facts out.
-# Example:
-#   context: |
-#     Designs and tasks must cover Windows, macOS, and Linux
-#     Write all artifacts in Spanish
+context: |
+  成果物の本文は日本語で記述する。OpenSpecの構造見出しと規範語は所定の英語表記を保つ。
+  1つの変更で扱う機能追加・修正は1つに絞り、無関係な改善を混ぜない。
+  現行仕様はopenspec/specs、変更提案はopenspec/changes、
+  手順・設計補足・調査・検証記録はdocsに置く。詳細はdocs/openspec.mdを参照する。
+  全1025種類を選択できることと、全組み合わせの形・配色の品質完成を区別する。
+  不要な後方互換・移行コードは追加しない。ユーザーの未コミット変更を保持し、コミットは行わない。
 
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-# Example:
-#   rules:
-#     proposal:
-#       - Keep proposals under 500 words
-#       - Always state what is out of scope
-#     tasks:
-#       - Break tasks into chunks of max 2 hours
+rules:
+  proposal:
+    - 変更の目的、対象範囲、対象外を明記する。
+    - 既存機能を変える場合は対応するcapabilityを指定し、実装済みの事実と提案を区別する。
+  specs:
+    - 要求本文にMUSTまたはSHALLを使い、各要求に観測可能な結果を持つシナリオを記述する。
+    - Requirement、Scenario、WHEN、THENなどの構造マーカーを保持し、説明は日本語にする。
+    - 既存仕様を変更する場合は差分の区分を明示し、実装の詳細や過去の検証件数を要求にしない。
+  design:
+    - 既存構成を再利用し、採用理由・代替案・影響範囲を必要な範囲で記述する。
+    - 画像・部位・配色を変える場合は、透過・保護領域・同種表示・品質上の制約への影響を記述する。
+  tasks:
+    - 資料更新、動作変更の失敗するテスト、最小実装、実動作の確認の順に作業を分ける。
+    - 資料・設定のみの変更はアプリのテストを増やさず、CLIによる設定・仕様の読み込みとリンクを確認する。
+    - 実際に確認した結果と未確認事項を区別し、README.mdとchangelog.mdへの同内容の履歴追記を含める。
 
-# Per-operation guidance (optional)
-# Add advisory guidance for how apply and archive work should be conducted.
-# This is separate from artifact rules above.
-# Example:
-#   operations:
-#     apply:
-#       guidance:
-#         - Keep test summaries concise
-#     archive:
-#       guidance:
-#         - Summarize the archive outcome before finishing
+operations:
+  apply:
+    guidance:
+      - docs/openspec.mdと関連する現行仕様・手順を読み、資料を先に更新してから実装する。
+      - 変更した画面やコマンドを実際に動かし、過去の検証結果を今回の成功として扱わない。
+  archive:
+    guidance:
+      - 実装・検証とタスクの完了を確認し、差分仕様を現行仕様へ反映してから整合性を検証する。
+      - 手順・更新履歴の追従と、残る品質上の制約や未確認事項の記載を確認する。
